@@ -1,0 +1,103 @@
+{
+ "cells": [
+  {
+   "cell_type": "code",
+   "execution_count": 3,
+   "metadata": {
+    "id": "iZTaT_aIDoRP"
+   },
+   "outputs": [
+    {
+     "name": "stdout",
+     "output_type": "stream",
+     "text": [
+      "✅ Saved 95 job listings to remoteok_jobs.csv\n"
+     ]
+    }
+   ],
+   "source": [
+    "## 🧪 Lab Task: Data Collection from RemoteOK\n",
+    "\n",
+    "#As a data scientist, the first step in any project is to collect relevant and structured data. In this exercise, your task is to extract job-related information from the RemoteOK job website: [https://remoteok.com/r](https://remoteok.com/r).\n",
+    "import requests\n",
+    "import pandas as pd\n",
+    "\n",
+    "url = \"https://remoteok.com/api\"\n",
+    "\n",
+    "headers = {'User-Agent': 'Mozilla/5.0'}  # Some APIs require a UA header\n",
+    "response = requests.get(url, headers=headers)\n",
+    "response.raise_for_status()\n",
+    "data = response.json()\n",
+    "\n",
+    "\n",
+    "jobs = data[1:] \n",
+    "### 🎯 Objectives:\n",
+    "#- Collect the following data fields for each job posting:\n",
+    " # - **Company Name**\n",
+    "  #- **Job Role**\n",
+    "  #- **Location**\n",
+    "  #- **Features or Tags** (e.g., technologies, benefits, job type)\n",
+    "records = []\n",
+    "for job in jobs:\n",
+    "    records.append({\n",
+    "        \"Company Name\": job.get(\"company\"),\n",
+    "        \"Job Role\": job.get(\"position\"),\n",
+    "        \"Location\": job.get(\"location\"),\n",
+    "        \"Features/Tags\": \", \".join(job.get(\"tags\", [])),\n",
+    "        \"Job URL\": job.get(\"url\")  # Added clickable link to job post\n",
+    "    })\n",
+    "\n",
+    "### 🛠 Instructions:\n",
+    "#- Use Python along with libraries such as `requests`, `pandas`, and optionally `json` or `BeautifulSoup` if needed.\n",
+    "#- Retrieve the job data from the RemoteOK API or web page.\n",
+    "#- Parse the JSON or HTML response to extract the required fields.\n",
+    "#- Store the collected data in a structured format such as **CSV** for future analysis.\n",
+    "df = pd.DataFrame(records)\n",
+    "### 📦 Output:\n",
+    "#A CSV file (e.g., `remoteok_jobs.csv`) containing all extracted job listings with the specified fields.\n",
+    "df.to_csv(\"remoteok_jobs.csv\", index=False)\n",
+    "print(f\"✅ Saved {len(df)} job listings to remoteok_jobs.csv\")\n",
+    "\n",
+    "#> ✅ This dataset will serve as the foundation for further data analysis and machine learning tasks in upcoming lab exercises.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "metadata": {},
+   "outputs": [],
+   "source": []
+  }
+ ],
+ "metadata": {
+  "colab": {
+   "provenance": []
+  },
+  "kernelspec": {
+   "display_name": "Python 3 (ipykernel)",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "codemirror_mode": {
+    "name": "ipython",
+    "version": 3
+   },
+   "file_extension": ".py",
+   "mimetype": "text/x-python",
+   "name": "python",
+   "nbconvert_exporter": "python",
+   "pygments_lexer": "ipython3",
+   "version": "3.13.5"
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 4
+}
